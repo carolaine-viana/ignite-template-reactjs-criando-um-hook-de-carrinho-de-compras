@@ -22,13 +22,12 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
-  const [cart, setCart] = useState<Product[]>(() => {
-    const storagedCart = localStorage.getItem("@RocketShoes:cart");
 
+  const [cart, setCart] = useState<Product[]>(() => {
+  const storagedCart = localStorage.getItem("@RocketShoes:cart");
     if (storagedCart) {
       return JSON.parse(storagedCart);
     }
-
     return [];
   });
 
@@ -69,12 +68,13 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      const updateCart = [...cart];
-      const productIndex = updateCart.findIndex((x) => x.id === productId);
+      const updatedCart = [...cart];
+      const productIndex = updatedCart.findIndex((product) => product.id === productId);
+
       if (productIndex >= 0) {
-        updateCart.splice(productIndex, 1);
-        setCart(updateCart);
-        localStorage.setItem("@RocketShoes:cart", JSON.stringify(updateCart));
+        updatedCart.splice(productIndex, 1);
+        setCart(updatedCart);
+        localStorage.setItem("@RocketShoes:cart", JSON.stringify(updatedCart));
       } else {
         throw Error();
       }
